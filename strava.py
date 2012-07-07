@@ -24,7 +24,8 @@ class APIError(Exception):
 
 
 class StravaObject(object):
-
+    """Base class for interacting with the Strava API endpoint."""
+    
     def __init__(self, oid):
         self._id = oid
 
@@ -47,7 +48,12 @@ class StravaObject(object):
 
 
 class Athlete(StravaObject):
+    """Encapsulates data about a single Athlete.
 
+    Note that the athlete's name is NOT available through this API. You have to
+    load a ride or effort to get that data from the service, and we don't want
+    to make that heavy a query at the top level.
+    """
     def __init__(self, oid):
         super(Athlete, self).__init__(oid)
         self._url = "/rides?athleteId=%s" % self.id
@@ -64,8 +70,9 @@ class Athlete(StravaObject):
 
         return out
 
-    def weekly_stats(self):
-        start = date.today() - timedelta(days=7)
+    def ride_stats(self, days=7):
+        """Get number of rides, time, and distance for the past N days."""
+        start = date.today() - timedelta(days=days)
         stats = defaultdict(float)
         
         for ride in self.rides(start_date=start):
@@ -77,7 +84,12 @@ class Athlete(StravaObject):
     
         
 class Ride(StravaObject):
+    """Information about a single ride.
 
+    Most of the ride data is encapsulated in a RideDetail instance, accessible
+    via the "detail" property. This lets us lazy-load the details, and saves an
+    API round-trip if all we care about is the ID or name of the ride.
+    """
     def __init__(self, oid, name):
         super(Ride, self).__init__(oid)
         self._name = name
@@ -103,6 +115,7 @@ class Ride(StravaObject):
 
 
 class RideDetail(StravaObject):
+    
     def __init__(self, oid):
         super(RideDetail, self).__init__(oid)
         self._attr = self.load("/rides/%s" % oid, u"ride")
@@ -137,6 +150,20 @@ class RideDetail(StravaObject):
 
 
 class Segment(StravaObject):
+    """Information about a single ride segment.
+
+    Most of the data is encapsulated in a SegmentDetail instance, accessible via
+    the "detail" property. This lets us lazy-load the details, and saves an API
+    round-trip if all we care about is the ID or name of the segment.
+
+    Note that this class combines the "effort" and "segment" as Strava defines
+    them. They both ultimately pertain to a given portion of a ride, so it makes
+    sense to access them both through the same interface.
+
+    This does have the side effect, however, of requiring two API round-trips to
+    load the "detail" property.  It's lazy-loaded, so if you just care about the
+    segment name or ID, you won't take the it.
+    """
     def __init__(self, attr):
         super(Segment, self).__init__(attr["id"])
         self._segment = attr["segment"]
