@@ -201,17 +201,3 @@ class SegmentDetail(StravaObject):
         return (self._segment_attr["elevationLow"],
                 self._segment_attr["elevationHigh"],
                 self._segment_attr["elevationGain"])
-
-
-if __name__ == "__main__":
-    a = Athlete(449392)
-    r = a.rides()[1]
-    rd = r.detail
-    s = r.segments[0]
-    sd = s.detail
-    
-    print a.name
-    print r.name
-    print rd.bike
-    print s.name
-    print sd.average_speed
