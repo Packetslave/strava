@@ -16,7 +16,13 @@ BASE_API = "http://www.strava.com/api/v1"
 from collections import defaultdict
 from datetime import date, timedelta
 import json
-import urllib2
+
+import sys
+
+if sys.version_info < (3, 0):
+    import urllib2
+else:
+    import urllib.request
 
 
 class APIError(Exception):
@@ -30,12 +36,18 @@ class StravaObject(object):
         self._id = oid
 
     def load(self, url, key):
-        try:
-            req = urllib2.Request(BASE_API + url)
-            rsp = urllib2.urlopen(req)
-            txt = rsp.read()
-        except urllib2.HTTPError as e:
-            raise APIError("%s: request failed: %s" % (url, e))
+        if sys.version_info < (3, 0):
+            try:
+                req = urllib2.Request(BASE_API + url)
+                rsp = urllib2.urlopen(req)
+            except urllib2.HTTPError as e:
+                raise APIError("%s: request failed: %s" % (url, e))
+        else:
+            try:
+                rsp = urllib.request.urlopen(BASE_API + url)
+            except urllib.error.HTTPError as e:
+                raise APIError("%s: request failed: %s" % (url, e))
+        txt = rsp.read().decode('utf-8')
 
         try:
             return json.loads(txt)[key]
@@ -118,7 +130,7 @@ class RideDetail(StravaObject):
     
     def __init__(self, oid):
         super(RideDetail, self).__init__(oid)
-        self._attr = self.load("/rides/%s" % oid, u"ride")
+        self._attr = self.load("/rides/%s" % oid, 'ride')
 
     @property
     def athlete(self):
