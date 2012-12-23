@@ -17,12 +17,11 @@ from collections import defaultdict
 from datetime import date, timedelta
 import json
 
-import sys
-
-if sys.version_info < (3, 0):
+try:
     import urllib2
-else:
-    import urllib.request
+except ImportError:
+    import urllib
+    urllib2 = False
 
 
 class APIError(Exception):
@@ -35,8 +34,9 @@ class StravaObject(object):
     def __init__(self, oid):
         self._id = oid
 
+    #noinspection PyUnresolvedReferences
     def load(self, url, key):
-        if sys.version_info < (3, 0):
+        if  urllib2:
             try:
                 req = urllib2.Request(BASE_API + url)
                 rsp = urllib2.urlopen(req)
