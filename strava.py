@@ -157,6 +157,10 @@ class RideDetail(StravaObject):
         return self._attr["distance"]
 
     @property
+    def average_speed(self):
+        return self._attr["averageSpeed"]
+
+    @property
     def moving_time(self):
         return self._attr["movingTime"]
 
