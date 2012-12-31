@@ -22,6 +22,7 @@ print('Total moving time: %f minutes' %
 
 for ride in st.rides():
     print('Ride name: %s' % ride.name)
+    print('Average speed: %f mph' % ride.detail.average_speed)
     for segment in ride.segments:
         print('  Segment: %s\n    Moving Time: %f minutes\n    Average '
               'Speed: %f mph' %
