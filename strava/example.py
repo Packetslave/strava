@@ -22,7 +22,10 @@ print('Total moving time: %f minutes' %
 
 for ride in st.rides():
     print('Ride name: %s' % ride.name)
-    print('Average speed: %f mph' % ride.detail.average_speed)
+    # convert from m/s to mph
+    # m/s * 2.23694 = mph
+    print('Average speed: %.1f mph' % (ride.detail.average_speed * 2.23694))
+    print('Average watts: %d' % ride.detail.average_watts)
     for segment in ride.segments:
         print('  Segment: %s\n    Moving Time: %f minutes\n    Average '
               'Speed: %f mph' %

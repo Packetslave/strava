@@ -36,7 +36,7 @@ class StravaObject(object):
 
     #noinspection PyUnresolvedReferences
     def load(self, url, key):
-        if  urllib2:
+        if urllib2:
             try:
                 req = urllib2.Request(BASE_API + url)
                 rsp = urllib2.urlopen(req)
@@ -163,6 +163,30 @@ class RideDetail(StravaObject):
     @property
     def moving_time(self):
         return self._attr["movingTime"]
+
+    @property
+    def average_watts(self):
+        return self._attr["averageWatts"]
+
+    @property
+    def maximum_speed(self):
+        return self._attr["maximumSpeed"]
+
+    @property
+    def elevation_gain(self):
+        return self._attr["elevationGain"]
+
+    @property
+    def description(self):
+        return self._attr["description"]
+
+    @property
+    def commute(self):
+        return self._attr["commute"]
+
+    @property
+    def trainer(self):
+        return self._attr["trainer"]
 
 
 class Segment(StravaObject):
