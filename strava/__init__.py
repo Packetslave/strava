@@ -70,12 +70,14 @@ class Athlete(StravaObject):
         super(Athlete, self).__init__(oid)
         self._url = "/rides?athleteId=%s" % self.id
 
-    def rides(self, start_date=None):
+    def rides(self, start_date=None, offset=None):
         out = []
 
         url = self._url
         if start_date:
             url += "&startDate=%s" % start_date.isoformat()
+        if offset:
+            url += "&offset=%s" % offset
             
         for ride in self.load(url, "rides"):
             out.append(Ride(ride["id"], ride["name"]))
