@@ -1,11 +1,10 @@
 strava
 ======
 
-**UPDATE**: Strava have delayed the shutdown of the v1/v2 endpoints until *June 30 2013*
+This project is unfortunately now dead. Strava has decided they don't want
+to be open with their data access any more, and has completely disabled their
+API (except for very, very limited "whitelisted" applications). 
 
-Unfortunately, it sounds like they're going to be fairly selective about who gets access
-to the new v3 API, and from the tone of their blog posts it doesn't sound like a generic
-library such as strava.py is going to make the cut. I hope I'm wrong, and if so I will 
-definitely be updating this library to work with v3.
-
-http://engineering.strava.com/update-on-the-api-v3-release-and-v1-v2-retirement/
+Without API access, there's no way for this project to continue. If Strava
+decides to reverse their decision and allow access, I'll make strava.py work
+with it.
