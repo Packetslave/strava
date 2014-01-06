@@ -1,10 +1,7 @@
 strava
 ======
 
-This project is unfortunately now dead. Strava has decided they don't want
-to be open with their data access any more, and has completely disabled their
-API (except for very, very limited "whitelisted" applications). 
+I'm currently evaluating the (recently released in BETA) Strava 3.0 API to see if this project 
+an be adapted to work with it.  I'm cautiously optimistic that something can be worked out.
 
-Without API access, there's no way for this project to continue. If Strava
-decides to reverse their decision and allow access, I'll make strava.py work
-with it.
+-- packetslave (2014/01/06)
